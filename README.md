@@ -52,3 +52,5 @@ The app will be available at http://localhost:3000
 - Push to GitHub
 - Import repository in Vercel
 - Add environment variable VITE_OWM_API_KEY
+
+The production app will be available at (https://weather-app-gamma-puce-43.vercel.app/)
