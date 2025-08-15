@@ -64,3 +64,22 @@ export async function fetchForecastByCity(
     }
   }
 }
+
+export async function fetchAirQuality(lat: number, lon: number) {
+  try {
+    const { data } = await API.get("/air_pollution", {
+      params: { lat, lon, appid: key },
+    });
+    return data as {
+      list: {
+        main: { aqi: 1 | 2 | 3 | 4 | 5 };
+        components: Record<string, number>;
+      }[];
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const responseData = error.response?.data;
+      throw new Error(responseData?.message || "Failed to fetch Air Quality.");
+    }
+  }
+}

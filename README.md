@@ -8,6 +8,7 @@ It fetches real-time weather data from the **OpenWeatherMap API** and shows **cu
 - 🔍 **Search by City** — Quickly search and view weather for any city worldwide.
 - 🌡 **Current Weather** — Temperature, humidity, wind, pressure, sunrise/sunset.
 - 📊 **5-Day Forecast** — Weather trends displayed with dynamic cards.
+- 💨 **Air Quality Index (AQI)** — Color-coded AQI display.
 - 🌍 **Multi-language Support** — Change UI language.
 - ⛅ **Animated Weather Icons** — Smooth, dynamic weather visuals.
 - 📱 **Responsive Design** — Works on mobile, tablet, and desktop.

@@ -11,6 +11,8 @@ import ErrorBanner from "../components/ErrorBanner";
 import HourlyForecastChart from "../components/HourlyForecastChart";
 import LanguageSelect from "../components/LanguageSelect";
 import { Menu, X } from "lucide-react";
+import AQICard from "../components/AQICard";
+import { fetchAirQuality } from "../api/weatherApi";
 
 export function WeatherPage() {
   const { coords, error: geoError } = useGeolocation();
@@ -29,6 +31,23 @@ export function WeatherPage() {
     units,
     lang
   );
+  const [aqi, setAqi] = useState<{
+    aqi: number;
+    components?: Record<string, number>;
+  } | null>(null);
+
+  useEffect(() => {
+    const c = currentQ.data;
+    if (!c) return;
+    (async () => {
+      try {
+        const aqiData = await fetchAirQuality(c.coord.lat, c.coord.lon);
+        const item = aqiData?.list?.[0];
+        if (item?.main?.aqi)
+          setAqi({ aqi: item.main.aqi, components: item.components });
+      } catch {}
+    })();
+  }, [currentQ.data]);
 
   const handleSearch = (q: string) => {
     if (q) {
@@ -72,7 +91,7 @@ export function WeatherPage() {
         </div>
       </header>
 
-      <main className="flex-1 w-full mx-auto px-6 py-6 space-y-8">
+      <main className="flex-1 w-full mx-auto px-6 py-6 space-y-3">
         {geoError && <ErrorBanner message={`Location error: ${geoError}`} />}
 
         {/* Current Weather section */}
@@ -83,8 +102,10 @@ export function WeatherPage() {
           />
         )}
         {currentQ.data && (
-          <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-8">
             <CurrentWeatherCard data={currentQ.data} units={units} />
+
+            {aqi && <AQICard aqi={aqi.aqi} components={aqi.components} />}
           </div>
         )}
 
